@@ -1,59 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" class="js csstransforms3d">
+<html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
 
-<head>
-  <meta charset="utf-8"> {{ partial "meta.html" . }} {{ partial "favicon.html" . }} {{ .Scratch.Add "title" "" }}{{ if eq .Site.Data.titles .Title }}{{ .Scratch.Set "title" (index .Site.Data.titles .Title).title }}{{ else }}{{ .Scratch.Set "title" .Title}}{{end}}
-  <title>{{ .Scratch.Get "title" }}</title>
-  
-   {{ $assetBusting := not .Site.Params.disableAssetsBusting }}
-    <link href="{{"css/nucleus.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/font-awesome.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/hybrid.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/featherlight.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/perfect-scrollbar.min.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/horsey.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    <link href="{{"css/hugo-theme.css" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    {{with .Site.Params.themeVariant}}
-      <link href="{{(printf "css/theme-%s.css" .) | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" rel="stylesheet">
-    {{end}}
-<style type="text/css">
-    :root #header + #content > #left > #rlblock_left {
-      display: none !important;
-    }
+  {{ partial "head.html" . }}
 
-    p,
-    li,
-    ul {
-      text-align: center
-    }
+  <body id="page-top" class="index">
+    {{ partial "nav.html" . }}
 
-    ul {
-      list-style-type: none;
-    }
-</style>
-{{ partial "custom-header.html" . }}
-</head>
+    {{ "<!-- 404 -->" | safeHTML }}
+    <header>
+      <div class="container">
+        <div class="404">
+          <div class="intro-text">
+            <div class="intro-heading">Page not found</div>
 
-<body>
+            {{ with .Site.Params.error404 }}
+            <div class="intro-lead-in">{{ .heading | markdownify }}</div>
 
-  <body class="" data-url="/">
+            <div class="intro-lead-in">{{ .text | markdownify }}</div>
+            {{ else }}
+            <div class="intro-lead-in">Requested page could not be found.</div>
+            <div class="intro-lead-in">You can always go back to our main <a href="{{ .Site.BaseURL }}">page</a>.</div>
+            {{ end }}
 
-    <section id="body" style="margin-left:0px;">
-      <div id="overlay"></div>
-      <div id="chapter">
-        <div id="body-inner">
-          <h1>{{T "title-404"}}</h1>
-          <p>
-          </p>
-          <p>{{T "message-404"}}</p>
-          <p></p>
-          <p><a href="{{.Site.BaseURL}}">{{T "Go-to-homepage"}}</a></p>
-          <p><img src="{{ .Site.BaseURL }}/images/gopher-404.jpg" style="width:50%"></img></p>
+          </div>
         </div>
       </div>
+    </header>
 
-    </section>
+    {{ if .Site.Params.footer.enable }}
+      {{ partial "footer.html" . }}
+    {{ end }}
+
+    {{ partial "js.html" . }}
   </body>
-
 </html>
